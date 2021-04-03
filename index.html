@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Is TLS Fast Yet?</title>
+    <title>TLS 变快了吗？</title>
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400" rel="stylesheet" type="text/css">
 
@@ -13,48 +13,48 @@
     <meta name="author" content="Ilya Grigorik" />
     <meta name="twitter:card" content="summary">
 
-    <meta name="description" content="TLS has exactly one performance problem: it is not used widely enough. Everything else can be optimized." />
-    <meta name="twitter:description" content="TLS has exactly one performance problem: it is not used widely enough. Everything else can be optimized.">
+    <meta name="description" content="TLS 性能的唯一问题：用的人不够多。任何其他问题都可以优化解决。" />
+    <meta name="twitter:description" content="TLS 性能的唯一问题：用的人不够多。任何其他问题都可以优化解决。">
 
     <meta property="og:image" content="/images/preview.png" />
     <meta name="twitter:image:src" content="/images/preview.png">
 
     <meta name="twitter:creator" content="@igrigorik">
-    <meta name="twitter:url" content="https://istlsfastyet.com/">
-    <meta name="twitter:title" content="Is TLS Fast Yet?">
+    <meta name="twitter:url" content="https://istlsfastyet.miigon.net">
+    <meta name="twitter:title" content="TLS 变快了吗？">
 
   </head>
   <body>
   <header>
     <div class="row">
       <div class="large-12 columns">
-        <h2>TLS has exactly one performance problem: it is not used widely enough.</h2>
-        <h3>Everything else can be optimized.</h3>
+        <h2>TLS 性能的唯一问题：用的人不够多。</h2>
+        <h3>任何其他问题都可以优化解决。</h3>
       </div>
     </div>
   </header>
 
   <div class="row">
     <div class="small-12 columns">
-      <p>Data delivered over an unencrypted channel is insecure, untrustworthy, and trivially intercepted. We owe it to our users to protect the security, privacy, and integrity of their data &mdash; all data must be encrypted while in flight and at rest. Historically, concerns over performance have been the common excuse to avoid these obligations, but today that is a false dichotomy. Let's dispel some myths.</p>
+      <p>通过未加密信道传输的数据不安全、不可信并且十分容易被截取。我们一直把保护用户的安全、隐私和数据完整视为自己的责任 —— 所有数据在传输和存储过程中都必须加密。自古以来，对性能的担忧常常被作为逃避这一义务的借口，但发展到今日，高性能与加密已经不再是势不两立的了。今天我们来辟一些谣。</p>
     </div>
   </div>
 
   <div class="row">
     <div class="large-12 columns">
-      <h3 id="cpu-latency"><a href="#cpu-latency">CPU &amp; latency costs</a></h3>
+      <h3 id="cpu-latency"><a href="#cpu-latency">CPU 与延迟开销</a></h3>
     </div>
 
     <div class="small-12 medium-8 large-8 columns">
-      <p>The process of establishing and communicating over an encrypted channel introduces additional computational costs. First, there is the asymmetric (public key) encryption used during the TLS handshake. Then, once a shared secret is established, symmetric encryption takes over.</p>
+      <p>创建和使用加密信道通信的过程，导致了额外的计算开销。首先是 TLS 握手过程中的非对称（公钥）加密。当共享密钥建立后，后续还要使用对称加密来处理数据的通信。</p>
     </div>
 
     <div class="small-12 medium-4 large-4 columns  panel">
-<pre><b># upgrade to latest</b>
+<pre><b># 升级到最新版</b>
 $> openssl version
 OpenSSL 1.1.1a  20 Nov 2018
 
-<b># run benchmarks</b>
+<b># 运行基准测试</b>
 $> openssl speed sha
 $> openssl speed ecdh</pre>
     </div>
@@ -62,21 +62,21 @@ $> openssl speed ecdh</pre>
 
   <div class="row">
     <div class="small-12 large-12 columns">
-      <p>Good news is, modern hardware has made great improvements to help minimize these costs, and what once may have required additional hardware can now be done efficiently by the CPU.</p>
+      <p>但好消息是，现代的硬件为了减小这些开销，已经做了长足改进。曾经可能需要专用附加硬件才能有效进行的运算，现在可以只用 CPU 高效地完成。</p>
     </div>
   </div>
 
   <div class="row panel callout">
     <div class="small-12 medium-6 large-6 columns">
       <p>
-      <q>On our production frontend machines, SSL/TLS accounts for less than 1% of the CPU load, less than 10 KB of memory per connection and less than 2% of network overhead. Many people believe that SSL/TLS takes a lot of CPU time and we hope the preceding numbers will help to dispel that.</q><br/>
+      <q>在我们的前线生产机器上，SSL/TLS 只产生了不到 1% 的 CPU 占用、单连接不到 10 KB 的内存使用和低于 2% 的网络开销。很多人以为 SSL/TLS 会耗费大量的 CPU 时间，我们希望前面提到的数字能够消除这种误解。</q><br/>
       <cite class="right"> - Adam Langley, Google <a href="https://www.imperialviolet.org/2010/06/25/overclocking-ssl.html">"Overclocking SSL"</a></cite>
     </p>
     </div>
 
     <div class="small-12 medium-6 large-6 columns">
       <p>
-      <q>We have deployed TLS at a large scale using both hardware and software load balancers. We have found that modern software-based TLS implementations running on commodity CPUs are fast enough to handle heavy HTTPS traffic load without needing to resort to dedicated cryptographic hardware.</q><br/>
+      <q>我们已经使用软件与硬件负载均衡器结合的方式大规模部署了 TLS。我们发现现代的软件 TLS 已经快到，能够在普通商用 CPU 上处理大量 HTTPS 流量，而不需要借助专门的加密运算硬件。</q><br/>
       <cite class="right"> - Doug Beaver, Facebook <a href="https://lists.w3.org/Archives/Public/ietf-http-wg/2012JulSep/0251.html">"HTTP2 Expression of Interest"</a></cite>
     </p>
     </div>
@@ -84,7 +84,7 @@ $> openssl speed ecdh</pre>
     <div class="small-12 large-12 columns">
       <p></p>
       <p>
-      <q>Elliptic Curve Diffie-Hellman (ECDHE) is only a little more expensive than RSA for an equivalent security level… In practical deployment, we found that enabling and prioritizing ECDHE cipher suites actually caused negligible increase in CPU usage. HTTP keepalives and session resumption mean that most requests do not require a full handshake, so handshake operations do not dominate our CPU usage. We find 75% of Twitter’s client requests are sent over connections established using ECDHE. The remaining 25% consists mostly of older clients that don’t yet support the ECDHE cipher suites.</q><br/>
+      <q>椭圆曲线密钥交换 (Elliptic Curve Diffie-Hellman (ECDHE)) 实现相同的安全级别的前提下，只比 RSA 开销大一点点…… 在实际的部署中，我们发现开启并优先使用 ECDHE 加密套件只造成了微乎其微的 CPU 占用增加。HTTP keepalives 和会话恢复功能意味着大多数请求实际上都不需要经过一个完整的握手流程，故握手操作并不大量占用我们的 CPU。我们发现 Twitter 75% 的客户端请求是通过 ECDHE 建立的连接传输的。剩下的 25% 主要包含暂时还不支持 ECDHE 加密套件的旧客户端。</q><br/>
       <cite class="right"> - Jacob Hoffman-Andrews, Twitter <a href="https://blog.twitter.com/2013/forward-secrecy-at-twitter-0">"Forward Secrecy at Twitter"</a></cite>
       </p>
     </div>
@@ -92,7 +92,7 @@ $> openssl speed ecdh</pre>
 
   <div class="row">
     <div class="small-12 medium-8 large-8 columns">
-      <p>Before the client and the server can begin exchanging application data over TLS, the encrypted tunnel must be negotiated, which introduces additional roundtrips for each new connection. However, we don't have to incur the cost of a full handshake in every case: TLS resumption and TLS False Start decrease the cost to a single roundtrip for new and returning clients.</p>
+      <p>在客户端和服务端可以通过 TLS 交换数据前，必须先协商建立加密信道，这导致了建立新连接时额外的往返通信（roundtrip）。然而实际上，并不是每次连接都必须承受一整套完整握手的开销：TLS 会话恢复 (resumption) 和 TLS 抢跑 (False Start) 功能能将客户连接开销降低到一个往返。</p>
     </div>
     <div class="small-12 medium-4 large-4 columns text-center">
       <img src="images/rtts.png" alt=""/>
@@ -104,25 +104,25 @@ $> openssl speed ecdh</pre>
   <div class="row">
     <div class="small-12 medium-8 large-8 columns">
       <hr />
-      <p>A well tuned TLS deployment can make an enormous positive difference in the user experience, as well as in your operational costs. Some of the most critical features and concepts:</p>
+      <p>一个配置完好的 TLS 部署可以为用户体验带来巨大的正面效果，同时也能改善运作开销。这是部分关键的功能和概念：</p>
 
       <ul>
-        <li><a href="https://hpbn.co/transport-layer-security-tls/#tls-handshake">TLS handshake</a></li>
-        <li><a href="https://hpbn.co/transport-layer-security-tls/#tls-session-resumption">TLS session resumption</a></li>
+        <li><a href="https://hpbn.co/transport-layer-security-tls/#tls-handshake">TLS 握手</a></li>
+        <li><a href="https://hpbn.co/transport-layer-security-tls/#tls-session-resumption">TLS 会话重启</a></li>
         <li><a href="https://hpbn.co/transport-layer-security-tls/#enable-tls-false-start">TLS False Start</a></li>
-        <li><a href="https://hpbn.co/transport-layer-security-tls/#optimize-tls-record-size">TLS record size optimization</a></li>
-        <li><a href="https://hpbn.co/transport-layer-security-tls/#leverage-early-termination">Early termination</a></li>
-        <li><a href="https://hpbn.co/transport-layer-security-tls/#enable-http-strict-transport-security-hsts">HTTP Strict Transport Security (HSTS)</a></li>
+        <li><a href="https://hpbn.co/transport-layer-security-tls/#optimize-tls-record-size">TLS 记录大小优化</a></li>
+        <li><a href="https://hpbn.co/transport-layer-security-tls/#leverage-early-termination">提前终止（Early termination）</a></li>
+        <li><a href="https://hpbn.co/transport-layer-security-tls/#enable-http-strict-transport-security-hsts">HTTP 严格通信安全 (HSTS)</a></li>
       </ul>
 
-      <p>To deliver the best performance, run down the <a href="https://hpbn.co/transport-layer-security-tls/#optimizing-for-tls">TLS performance checklist</a> and use a tool like <a href="https://www.ssllabs.com/ssltest/">Qualys SSL Server Test</a> to scan your server for common configuration and security flaws.</p>
+      <p>为实现最佳性能，查阅 <a href="https://hpbn.co/transport-layer-security-tls/#optimizing-for-tls">TLS 性能列表</a>，并使用如 <a href="https://www.ssllabs.com/ssltest/">Qualys SSL Server Test</a> 这样的工具来检测你的服务器是否有常见的配置缺陷或安全缺陷。</p>
     </div>
 
     <div class="small-12 medium-4 large-4 columns panel">
-      <h5>High Performance Browser Networking</h5>
+      <h5>《高性能浏览器网络》</h5>
       <img src="images/hpbn.png" alt=""/>
-      <p><i>What every developer should know about networking and web performance.</i></p>
-      <a href="https://hpbn.co/?utm_source=istlsfastyet&amp;utm_medium=referral&amp;utm_campaign=tls" class="success button expand">Read HPBN online</a>
+      <p><i>每个开发者都应该知道的网络和 web 性能知识。</i></p>
+      <a href="https://hpbn.co/?utm_source=istlsfastyet&amp;utm_medium=referral&amp;utm_campaign=tls" class="success button expand">在线阅读 HPBN</a>
     </div>
 
     <hr />
@@ -130,19 +130,19 @@ $> openssl speed ecdh</pre>
 
   <div class="row">
     <div class="large-12 columns">
-      <h3 id="server-performance"><a href="#server-performance">Server performance</a></h3>
-      <p>TLS exposes many different knobs and new config flags on every server. Our goal here is not to provide an exhaustive list (consult server docs for that), but to highlight status of important performance-oriented features: resumption, stapling, false start (requires ALPN and forward secrecy), and support for the HTTP/2 protocol.</p>
+      <h3 id="server-performance"><a href="#server-performance">服务器性能</a></h3>
+      <p>TLS 为服务器增添了许多新的参数和选项。我们的目标不是提供一个全面详尽的清单（需要的话，请查阅服务器文档），而是突出一些性能相关的重要功能：重启 (resumption)、装订 (stapling)、抢跑（false start）（需要 ALPN 与向前保密（forward secrecy））和对 HTTP/2 协议的支持。</p>
 
       <table class="cf">
         <thead>
           <tr>
             <th style="width: 100px">&nbsp;</th>
-            <th>Session identifiers</th>
-            <th>Session tickets</th>
-            <th>OCSP stapling</th>
-            <th>Dynamic record sizing</th>
+            <th>会话标识符</th>
+            <th>会话 tickets</th>
+            <th>OCSP 装订</th>
+            <th>动态 record 大小</th>
             <th>ALPN</th>
-            <th>Forward secrecy</th>
+            <th>向前保密</th>
             <th>HTTP/2</th>
             <th>TLS 1.3</th>
             <th>TLS 1.3 <nobr>0-RTT</nobr></th>
@@ -151,200 +151,200 @@ $> openssl speed ecdh</pre>
         <tbody>
           <tr>
             <td><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html">Apache</a></td>
-            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslsessioncache">yes</a></td>
-            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslsessionticketkeyfile">yes</a></td>
-            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslusestapling">yes</a></td>
-            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_http2.html#h2tlscooldownsecs">yes</a></td>
-            <td class="ok"><a href="https://httpd.apache.org/docs/trunk/mod/mod_ssl.html#sslalpnpreference">yes</a></td>
-            <td class="ok"><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Apache">yes</a></td>
-            <td class="ok"><a href="https://httpd.apache.org/docs/trunk/mod/mod_http2.html">yes</a></td>
-            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslciphersuite">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslsessioncache">是</a></td>
+            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslsessionticketkeyfile">是</a></td>
+            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslusestapling">是</a></td>
+            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_http2.html#h2tlscooldownsecs">是</a></td>
+            <td class="ok"><a href="https://httpd.apache.org/docs/trunk/mod/mod_ssl.html#sslalpnpreference">是</a></td>
+            <td class="ok"><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Apache">是</a></td>
+            <td class="ok"><a href="https://httpd.apache.org/docs/trunk/mod/mod_http2.html">是</a></td>
+            <td class="ok"><a href="https://httpd.apache.org/docs/2.4/mod/mod_ssl.html#sslciphersuite">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://docs.trafficserver.apache.org/en/latest/index.html">ATS</a></td>
-            <td class="ok"><a href="https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html#proxy-config-ssl-session-cache-timeout">yes</a></td>
-            <td class="ok"><a href="https://cwiki.apache.org/confluence/display/TS/What's+new+in+v4.2.x#What'snewinv4.2.x-RFC5077TLSSessiontickets">yes</a></td>
-            <td class="ok"><a href="https://issues.apache.org/jira/browse/TS-2367">yes</a></td>
-            <td class="ok"><a href="https://issues.apache.org/jira/browse/TS-2503">dynamic</a></td>
-            <td class="ok"><a href="http://mail-archives.us.apache.org/mod_mbox/www-announce/201206.mbox/%3C4FE245C6.6060900@apache.org%3E">yes</a></td>
-            <td class="ok"><a href="https://issues.apache.org/jira/browse/TS-2372">yes</a></td>
-            <td class="ok"><a href="https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html#http-2-configuration">yes</a></td>
-            <td class="ok"><a href="https://cwiki.apache.org/confluence/display/TS/What%27s+New+in+v8.0.x">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html#proxy-config-ssl-session-cache-timeout">是</a></td>
+            <td class="ok"><a href="https://cwiki.apache.org/confluence/display/TS/What's+new+in+v4.2.x#What'snewinv4.2.x-RFC5077TLSSessiontickets">是</a></td>
+            <td class="ok"><a href="https://issues.apache.org/jira/browse/TS-2367">是</a></td>
+            <td class="ok"><a href="https://issues.apache.org/jira/browse/TS-2503">动态</a></td>
+            <td class="ok"><a href="http://mail-archives.us.apache.org/mod_mbox/www-announce/201206.mbox/%3C4FE245C6.6060900@apache.org%3E">是</a></td>
+            <td class="ok"><a href="https://issues.apache.org/jira/browse/TS-2372">是</a></td>
+            <td class="ok"><a href="https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html#http-2-configuration">是</a></td>
+            <td class="ok"><a href="https://cwiki.apache.org/confluence/display/TS/What%27s+New+in+v8.0.x">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://github.com/mholt/caddy">Caddy</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">yes</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">yes</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">yes</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">yes</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">yes</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">yes</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">yes</a></td>
-            <td class="ok"><a href="https://caddyserver.com/docs/tls#protocols">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">是</a></td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">是</a></td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">是</a></td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">是</a></td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">是</a></td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">是</a></td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#summary">是</a></td>
+            <td class="ok"><a href="https://caddyserver.com/docs/tls#protocols">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://support.f5.com/kb/en-us/solutions/public/14000/700/sol14783.html">F5 BIG-IP</a></td>
-            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-11-6-0/5.html#unique_828493537">yes</a></td>
-            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-11-6-0/5.html#unique_774070786">yes</a></td>
-            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-11-6-0/4.html#unique_823049624">yes</a></td>
-            <td class="ok"><a href="https://support.f5.com/content/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-12-1-0/_jcr_content/pdfAttach/download/file.res/BIG-IP_System__SSL_Administration.pdf">yes</a></a></td>
-            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip-aam/manuals/product/aam-concepts-11-6-0/15.html">yes</a></td>
-            <td class="ok"><a href="https://support.f5.com/kb/en-us/solutions/public/13000/100/sol13163.html">yes</a></td>
-            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip-aam/manuals/product/aam-concepts-11-6-0/15.html">yes</a></td>
-            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/releasenotes/product/relnote-bigip-14-1-0.html#rn_ltm-tmos_14101_new">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-11-6-0/5.html#unique_828493537">是</a></td>
+            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-11-6-0/5.html#unique_774070786">是</a></td>
+            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-11-6-0/4.html#unique_823049624">是</a></td>
+            <td class="ok"><a href="https://support.f5.com/content/kb/en-us/products/big-ip_ltm/manuals/product/bigip-ssl-administration-12-1-0/_jcr_content/pdfAttach/download/file.res/BIG-IP_System__SSL_Administration.pdf">是</a></a></td>
+            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip-aam/manuals/product/aam-concepts-11-6-0/15.html">是</a></td>
+            <td class="ok"><a href="https://support.f5.com/kb/en-us/solutions/public/13000/100/sol13163.html">是</a></td>
+            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip-aam/manuals/product/aam-concepts-11-6-0/15.html">是</a></td>
+            <td class="ok"><a href="https://support.f5.com/kb/en-us/products/big-ip_ltm/releasenotes/product/relnote-bigip-14-1-0.html#rn_ltm-tmos_14101_new">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://h2o.examp1e.net/">H2O</a></td>
-            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ssl-session-resumption">yes</a></td>
-            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ssl-session-resumption">yes</a></td>
-            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ocsp-update-interval">yes</a></td>
-            <td class="ok"><a href="https://h2o.examp1e.net/configure/http2_directives.html#latency-optimization">dynamic</a></td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ssl-session-resumption-ticket-based">yes</a></td>
-            <td class="ok"><a href="https://h2o.examp1e.net/configure/http2_directives.html">yes</a></td>
-            <td class="ok"><a href="https://github.com/h2o/h2o/releases/tag/v2.2.0">yes</a></td>
-            <td class="ok"><a href="https://github.com/h2o/h2o/releases/tag/v2.2.0">yes</td>
+            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ssl-session-resumption">是</a></td>
+            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ssl-session-resumption">是</a></td>
+            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ocsp-update-interval">是</a></td>
+            <td class="ok"><a href="https://h2o.examp1e.net/configure/http2_directives.html#latency-optimization">动态</a></td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://h2o.examp1e.net/configure/base_directives.html#ssl-session-resumption-ticket-based">是</a></td>
+            <td class="ok"><a href="https://h2o.examp1e.net/configure/http2_directives.html">是</a></td>
+            <td class="ok"><a href="https://github.com/h2o/h2o/releases/tag/v2.2.0">是</a></td>
+            <td class="ok"><a href="https://github.com/h2o/h2o/releases/tag/v2.2.0">是</td>
           </tr>
           <tr>
             <td><a href="https://cbonte.github.io/haproxy-dconv/1.8/configuration.html">HAProxy</a></td>
-            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.1-no-tls-tickets">yes</a></td>
-            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.1-no-tls-tickets">yes</a></td>
-            <td class="ok"><a href="https://kura.io/2014/07/02/haproxy-ocsp-stapling/">yes</a></td>
-            <td class="ok"><a href="https://gist.github.com/igrigorik/8960971">dynamic</a></td>
-            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.1-alpn">yes</a></td>
-            <td class="ok"><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Haproxy">yes</a></td>
-            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#1.1">yes</a></td>
-            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.1-ssl-max-ver">yes</a></td>
-            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.1-allow-0rtt">yes</a></td>
+            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.1-no-tls-tickets">是</a></td>
+            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.1-no-tls-tickets">是</a></td>
+            <td class="ok"><a href="https://kura.io/2014/07/02/haproxy-ocsp-stapling/">是</a></td>
+            <td class="ok"><a href="https://gist.github.com/igrigorik/8960971">动态</a></td>
+            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.1-alpn">是</a></td>
+            <td class="ok"><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Haproxy">是</a></td>
+            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#1.1">是</a></td>
+            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.1-ssl-max-ver">是</a></td>
+            <td class="ok"><a href="https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.1-allow-0rtt">是</a></td>
           </tr>
           <tr>
             <td><a href="https://github.com/varnish/hitch">Hitch</a></td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://github.com/varnish/hitch/blob/master/docs/configuration.md#ocsp-stapling">yes</a></td>
-            <td class="alert">no</td>
-            <td class="ok"><a href="https://github.com/varnish/hitch/blob/master/docs/configuration.md#alpnnpn-support">yes</a></td>
-            <td class="ok">yes</td>
-            <td class=ok><a href="https://github.com/varnish/hitch/blob/master/docs/configuration.md#alpnnpn-support">yes</a></td>
-            <td class="ok"><a href="https://github.com/varnish/hitch/blob/master/CHANGES.rst#hitch-150-2018-12-17">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://github.com/varnish/hitch/blob/master/docs/configuration.md#ocsp-stapling">是</a></td>
+            <td class="alert">否</td>
+            <td class="ok"><a href="https://github.com/varnish/hitch/blob/master/docs/configuration.md#alpnnpn-support">是</a></td>
+            <td class="ok">是</td>
+            <td class=ok><a href="https://github.com/varnish/hitch/blob/master/docs/configuration.md#alpnnpn-support">是</a></td>
+            <td class="ok"><a href="https://github.com/varnish/hitch/blob/master/CHANGES.rst#hitch-150-2018-12-17">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://www.iis.net/configreference">IIS</a></td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://technet.microsoft.com/en-us/library/hh831771.aspx">yes</a></td>
-            <td class="ok"><a href="https://unmitigatedrisk.com/?p=368">yes</a></td>
-            <td class="alert">no</td>
-            <td class="ok"><a href="https://technet.microsoft.com/en-us/library/hh831771.aspx">yes</a></td>
-            <td class="ok"><a href="https://blogs.technet.com/b/erezs_iis_blog/archive/2013/08/22/perfect-secrecy-in-an-imperfect-world.aspx">yes</a></td>
-            <td class="ok"><a href="https://blogs.iis.net/nazim/http-2-for-iis-in-windows-10-technical-preview">yes</a></td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://technet.microsoft.com/en-us/library/hh831771.aspx">是</a></td>
+            <td class="ok"><a href="https://unmitigatedrisk.com/?p=368">是</a></td>
+            <td class="alert">否</td>
+            <td class="ok"><a href="https://technet.microsoft.com/en-us/library/hh831771.aspx">是</a></td>
+            <td class="ok"><a href="https://blogs.technet.com/b/erezs_iis_blog/archive/2013/08/22/perfect-secrecy-in-an-imperfect-world.aspx">是</a></td>
+            <td class="ok"><a href="https://blogs.iis.net/nazim/http-2-for-iis-in-windows-10-technical-preview">是</a></td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://www.citrix.com/products/citrix-adc/?posit=glnav">Citrix ADC</a></td>
-            <td class="ok"><a href="https://support.citrix.com/article/CTX121925">yes</a></td>
-            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/ssl/ssl-profiles/ssl-enabling-the-default-profile.html">yes</a></td>
-            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/ssl/ssl-11-1-ocsp-stapling-solution.html">yes</a></td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/ssl/ciphers-available-on-the-citrix-ADC-appliances/diffie-hellman-key-generation-and-achieving-pfs-with-dhe.html">yes</a></td>
-            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/system/http-configurations/configuring-http2.html">yes</a></td>
-            <td class="ok"><a href="https://www.citrix.com/blogs/2018/09/11/citrix-announces-adc-support-for-tls-1-3/">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://support.citrix.com/article/CTX121925">是</a></td>
+            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/ssl/ssl-profiles/ssl-enabling-the-default-profile.html">是</a></td>
+            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/ssl/ssl-11-1-ocsp-stapling-solution.html">是</a></td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/ssl/ciphers-available-on-the-citrix-ADC-appliances/diffie-hellman-key-generation-and-achieving-pfs-with-dhe.html">是</a></td>
+            <td class="ok"><a href="https://docs.citrix.com/en-us/netscaler/12/system/http-configurations/configuring-http2.html">是</a></td>
+            <td class="ok"><a href="https://www.citrix.com/blogs/2018/09/11/citrix-announces-adc-support-for-tls-1-3/">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL">lighttpd</a></td>
-            <td class="alert"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#Session-Caching">no</a></td>
-            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#Session-Tickets">yes</a></td>
-            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#OCSP-Stapling">yes</a></td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#Perfect-Forward-Secrecy-PFS">yes</a></td>
-            <td class="ok"><a href="https://redmine.lighttpd.net/issues/2813">yes</a></td>
-            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL">yes</a></td>
-            <td class="alert">no</td>
+            <td class="alert"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#Session-Caching">否</a></td>
+            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#Session-Tickets">是</a></td>
+            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#OCSP-Stapling">是</a></td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL#Perfect-Forward-Secrecy-PFS">是</a></td>
+            <td class="ok"><a href="https://redmine.lighttpd.net/issues/2813">是</a></td>
+            <td class="ok"><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_SSL">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html">NGINX</a></td>
-            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_session_cache">yes</a></td>
-            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_session_tickets">yes</a></td>
-            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_stapling">yes</a></td>
-            <td class="warn"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_buffer_size">static</a> (16k)</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Nginx">yes</a></td>
-            <td class="ok"><a href="https://www.nginx.com/blog/early-alpha-patch-http2/">yes</a></td>
-            <td class="ok"><a href="https://twitter.com/nginxorg/status/856896480497385473">yes</a></td>
-            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_early_data">yes</a></td>
+            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_session_cache">是</a></td>
+            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_session_tickets">是</a></td>
+            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_stapling">是</a></td>
+            <td class="warn"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_buffer_size">静态</a> (16k)</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Nginx">是</a></td>
+            <td class="ok"><a href="https://www.nginx.com/blog/early-alpha-patch-http2/">是</a></td>
+            <td class="ok"><a href="https://twitter.com/nginxorg/status/856896480497385473">是</a></td>
+            <td class="ok"><a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_early_data">是</a></td>
           </tr>
           <tr>
             <td><a href="https://nodejs.org/api/https.html">node.js</a></td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener">yes</a></td>
-            <td class="warn"><a href="https://nodejs.org/api/tls.html#tls_event_ocsprequest">optional</a></td>
-            <td class="warn"><a href="https://nodejs.org/api/tls.html#tls_tlssocket_setmaxsendfragment_size">optional</a></td>
-            <td class="ok"><a href="https://nodejs.org/api/tls.html#tls_event_secureconnection">yes</a></td>
-            <td class="ok"><a href="https://nodejs.org/api/tls.html#tls_perfect_forward_secrecy">yes</a></td>
-            <td class="ok"><a href="https://nodejs.org/dist/latest-v12.x/docs/api/http2.html">yes</a></td>
-            <td class="ok"><a href="https://github.com/nodejs/node/blob/master/doc/changelogs/CHANGELOG_V12.md#2019-04-23-version-1200-current-bethgriggs">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener">是</a></td>
+            <td class="warn"><a href="https://nodejs.org/api/tls.html#tls_event_ocsprequest">可选</a></td>
+            <td class="warn"><a href="https://nodejs.org/api/tls.html#tls_tlssocket_setmaxsendfragment_size">可选</a></td>
+            <td class="ok"><a href="https://nodejs.org/api/tls.html#tls_event_secureconnection">是</a></td>
+            <td class="ok"><a href="https://nodejs.org/api/tls.html#tls_perfect_forward_secrecy">是</a></td>
+            <td class="ok"><a href="https://nodejs.org/dist/latest-v12.x/docs/api/http2.html">是</a></td>
+            <td class="ok"><a href="https://github.com/nodejs/node/blob/master/doc/changelogs/CHANGELOG_V12.md#2019-04-23-version-1200-current-bethgriggs">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://golang.org/pkg/crypto/tls/">Go</a></td>
-            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#ClientSessionState">yes</a></td>
-            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#Config.SetSessionTicketKeys">yes</a></td>
-            <td class="warn"><a href="https://golang.org/pkg/crypto/tls/#Certificate">optional</a></td>
-            <td class="ok"><a href="https://golang.org/doc/go1.7#crypto_tls">yes</a></td>
-            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#Config">yes</a></td>
-            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#Config">yes</a></td>
-            <td class="ok"><a href="https://golang.org/doc/go1.6#http2">yes</a></td>
-            <td class="ok"><a href="https://golang.org/doc/go1.12#tls_1_3">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#ClientSessionState">是</a></td>
+            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#Config.SetSessionTicketKeys">是</a></td>
+            <td class="warn"><a href="https://golang.org/pkg/crypto/tls/#Certificate">可选</a></td>
+            <td class="ok"><a href="https://golang.org/doc/go1.7#crypto_tls">是</a></td>
+            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#Config">是</a></td>
+            <td class="ok"><a href="https://golang.org/pkg/crypto/tls/#Config">是</a></td>
+            <td class="ok"><a href="https://golang.org/doc/go1.6#http2">是</a></td>
+            <td class="ok"><a href="https://golang.org/doc/go1.12#tls_1_3">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://nghttp2.org/documentation/nghttpx.1.html">nghttpx</a></td>
-            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#session-id-resumption">yes</a></td>
-            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#tls-session-ticket-resumption">yes</a></td>
-            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#ocsp-stapling">yes</a></td>
-            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#cmdoption-nghttpx--tls-dyn-rec-warmup-threshold">dynamic</a></td>
-            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#cmdoption-nghttpx--npn-list">yes</a></td>
-            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#cmdoption-nghttpx--ciphers">yes</a></td>
-            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#http-2-and-spdy">yes</a></td>
-            <td class="ok"><a href="https://nghttp2.org/blog/2018/10/04/nghttp2-v1-34-0/">yes</a></td>
-            <td class="ok"><a href="https://nghttp2.org/blog/2018/10/04/nghttp2-v1-34-0/">yes</a></td>
+            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#session-id-resumption">是</a></td>
+            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#tls-session-ticket-resumption">是</a></td>
+            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#ocsp-stapling">是</a></td>
+            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#cmdoption-nghttpx--tls-dyn-rec-warmup-threshold">动态</a></td>
+            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#cmdoption-nghttpx--npn-list">是</a></td>
+            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#cmdoption-nghttpx--ciphers">是</a></td>
+            <td class="ok"><a href="https://nghttp2.org/documentation/nghttpx.1.html#http-2-and-spdy">是</a></td>
+            <td class="ok"><a href="https://nghttp2.org/blog/2018/10/04/nghttp2-v1-34-0/">是</a></td>
+            <td class="ok"><a href="https://nghttp2.org/blog/2018/10/04/nghttp2-v1-34-0/">是</a></td>
           </tr>
           <tr>
             <td><a href="https://www.pulsesecure.net/vtm">Pulse Secure vTM</a></td>
-            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=224">yes</a></td>
-            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=228">yes</a></td>
-            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=225">yes</a></td>
-            <td class="alert">no</td>
-            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=175">yes</a></td>
-            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=219">yes</a></td>
-            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=175">yes</a></td>
-            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1441/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/18.3/ps-vtm-18.3-userguide.pdf#page=226">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=224">是</a></td>
+            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=228">是</a></td>
+            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=225">是</a></td>
+            <td class="alert">否</td>
+            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=175">是</a></td>
+            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=219">是</a></td>
+            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1027/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/17.4/ps-vtm-17.4-userguide.pdf#page=175">是</a></td>
+            <td class="ok"><a href="https://www.pulsesecure.net/download/techpubs/current/1441/Pulse-vADC-Solutions/Pulse-Virtual-Traffic-Manager/18.3/ps-vtm-18.3-userguide.pdf#page=226">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td><a href="https://www.shimmercat.com/">ShimmerCat</a></td>
-            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">yes</a></td>
-            <td class="alert"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">no</a></td>
-            <td class="alert"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">no</a></td>
-            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#frame-sizes-for-data-headers">yes</a></td>
-            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">yes</a></td>
-            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">yes</a></td>
-            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#protocol-support">yes</a></td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">是</a></td>
+            <td class="alert"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">否</a></td>
+            <td class="alert"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">否</a></td>
+            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#frame-sizes-for-data-headers">是</a></td>
+            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">是</a></td>
+            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#misc-tls-features">是</a></td>
+            <td class="ok"><a href="https://www.shimmercat.com/en/docs/1.5/featureset/#protocol-support">是</a></td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
        </tbody>
       </table>
 
-      <p>Your favorite server missing, or found an error? Open a <a href="https://github.com/igrigorik/istlsfastyet.com/issues">pull request!</a></p>
+      <p>没有你最喜欢的服务器，或者发现了一个错误？发起一个 <a href="https://github.com/igrigorik/istlsfastyet.com/issues">pull request!</a></p>
 
       <hr />
     </div>
@@ -352,19 +352,19 @@ $> openssl speed ecdh</pre>
 
   <div class="row">
     <div class="large-12 columns">
-      <h3 id="cdn-paas"><a href="#cdn-paas">CDN &amp; PaaS performance</a></h3>
-      <p>Using a CDN allows us to terminate the connection close to the user, which can significantly reduce the cost of TCP and TLS handshake - see <a href="https://hpbn.co/transport-layer-security-tls/#leverage-early-termination">early termination</a>. For best results you should be using a CDN to serve both static and dynamic content.</p>
+      <h3 id="cdn-paas"><a href="#cdn-paas">CDN &amp; PaaS 性能</a></h3>
+      <p>使用 CDN 可以在更接近用户的位置处理请求，可显著降低 TCP 与 TLS 握手的开销 - 查阅 <a href="https://hpbn.co/transport-layer-security-tls/#leverage-early-termination">early termination</a>。为实现最佳效果，你应该为静态内容和动态内容都开启 CDN。</p>
 
       <table class="cf">
         <thead>
           <tr>
             <th style="width:100px">&nbsp;</th>
-            <th>Session identifiers</th>
-            <th>Session tickets</th>
-            <th>OCSP stapling</th>
-            <th>Dynamic record sizing</th>
+            <th>会话标识符</th>
+            <th>会话 tickets</th>
+            <th>OCSP 装订</th>
+            <th>动态 record 大小</th>
             <th>ALPN</th>
-            <th>Forward secrecy</th>
+            <th>向前保密</th>
             <th>HTTP/2</th>
             <th>TLS 1.3</th>
             <th>TLS 1.3 <nobr>0-RTT</nobr></th>
@@ -373,248 +373,248 @@ $> openssl speed ecdh</pre>
         <tbody>
           <tr>
             <td>Akamai</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://community.akamai.com/customers/s/article/WebPerformanceCertificateProvisioningSystemCPSRecommendationsandBestPractices20180719231737">yes</a></td>
-            <td class="warn">configurable (static)</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://http2.akamai.com/">yes</a></td>
-            <td class="ok"><a href="https://community.akamai.com/customers/s/article/Get-ready-for-TLS-1-3">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://community.akamai.com/customers/s/article/WebPerformanceCertificateProvisioningSystemCPSRecommendationsandBestPractices20180719231737">是</a></td>
+            <td class="warn">可配置 (静态)</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://http2.akamai.com/">是</a></td>
+            <td class="ok"><a href="https://community.akamai.com/customers/s/article/Get-ready-for-TLS-1-3">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>AWS ELB (Classic)</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="ok"><a href="https://aws.amazon.com/about-aws/whats-new/2014/02/19/elastic-load-balancing-perfect-forward-secrecy-and-more-new-security-features/">yes</a></td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="ok"><a href="https://aws.amazon.com/about-aws/whats-new/2014/02/19/elastic-load-balancing-perfect-forward-secrecy-and-more-new-security-features/">是</a></td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>AWS ELB (Application)</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://aws.amazon.com/about-aws/whats-new/2014/02/19/elastic-load-balancing-perfect-forward-secrecy-and-more-new-security-features/">yes</a></td>
-            <td class="ok"><a href="https://aws.amazon.com/blogs/aws/new-aws-application-load-balancer/">yes</a></td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://aws.amazon.com/about-aws/whats-new/2014/02/19/elastic-load-balancing-perfect-forward-secrecy-and-more-new-security-features/">是</a></td>
+            <td class="ok"><a href="https://aws.amazon.com/blogs/aws/new-aws-application-load-balancer/">是</a></td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>AWS CloudFront</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://aws.amazon.com/about-aws/whats-new/2016/09/amazon-cloudfront-now-supports-http2/">yes</a></td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://aws.amazon.com/about-aws/whats-new/2016/09/amazon-cloudfront-now-supports-http2/">是</a></td>
+            <td class="ok"><a href="https://aws.amazon.com/about-aws/whats-new/2020/09/cloudfront-tlsv1-3-support/">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>BelugaCDN</td>
-            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">yes</a></td>
-            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">yes</a></td>
-            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">yes</a></td>
-            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">dynamic</a></td>
-            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">yes</a></td>
-            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">yes</a></td>
-            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">yes</a></td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">是</a></td>
+            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">是</a></td>
+            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">是</a></td>
+            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">动态</a></td>
+            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">是</a></td>
+            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">是</a></td>
+            <td class="ok"><a href="https://docs.belugacdn.com/docs/ssl-certificates">是</a></td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>CDN77</td>
-            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">yes</a></td>
-            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">yes</a></td>
-            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">yes</a></td>
-            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">dynamic</a></td>
-            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">yes</a></td>
-            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">yes</a></td>
-            <td class="ok"><a href="https://www.cdn77.com/http2">yes</a></td>
-            <td class="ok"><a href="https://www.cdn77.com/blog/latest-tls-improving-https/">yes</a></td>
-            <td class="ok"><a href="https://www.cdn77.com/blog/latest-tls-improving-https/">yes</a></td>
+            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">是</a></td>
+            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">是</a></td>
+            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">是</a></td>
+            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">动态</a></td>
+            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">是</a></td>
+            <td class="ok"><a href="https://client.cdn77.com/support/knowledgebase/general-faq/ssl-tech-specs">是</a></td>
+            <td class="ok"><a href="https://www.cdn77.com/http2">是</a></td>
+            <td class="ok"><a href="https://www.cdn77.com/blog/latest-tls-improving-https/">是</a></td>
+            <td class="ok"><a href="https://www.cdn77.com/blog/latest-tls-improving-https/">是</a></td>
           </tr>
           <tr>
             <td>Cloudflare</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok">dynamic</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://blog.cloudflare.com/introducing-http2/">yes</a></td>
-            <td class="ok"><a href="https://blog.cloudflare.com/introducing-tls-1-3/">yes</a></td>
-            <td class="ok"><a href="https://blog.cloudflare.com/introducing-0-rtt/">yes</a></td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok">动态</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://blog.cloudflare.com/introducing-http2/">是</a></td>
+            <td class="ok"><a href="https://blog.cloudflare.com/introducing-tls-1-3/">是</a></td>
+            <td class="ok"><a href="https://blog.cloudflare.com/introducing-0-rtt/">是</a></td>
           </tr>
           <tr>
             <td>ChinaNetCenter</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>EdgeCast</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.verizondigitalmedia.com/blog/2017/04/http2-done-right/">yes</a></td>
-            <td class="ok"><a href="https://www.verizondigitalmedia.com/blog/2018/12/tls-13-making-the-internet-faster-and-safer/">yes</a></td>
-            <td class="alert">no</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.verizondigitalmedia.com/blog/2017/04/http2-done-right/">是</a></td>
+            <td class="ok"><a href="https://www.verizondigitalmedia.com/blog/2018/12/tls-13-making-the-internet-faster-and-safer/">是</a></td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>Fastly</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok">dynamic</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.fastly.com/blog/http2-now-general-availability">yes</a></td>
-            <td class="ok"><a href="https://docs.fastly.com/en/guides/enabling-tls-1-3-through-fastly">yes</a></td>
-            <td class="warn"><a href="https://docs.fastly.com/en/guides/enabling-tls-1-3-through-fastly#limitations-and-key-behaviors">client->Fastly only</a></td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok">动态</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.fastly.com/blog/http2-now-general-availability">是</a></td>
+            <td class="ok"><a href="https://docs.fastly.com/en/guides/enabling-tls-1-3-through-fastly">是</a></td>
+            <td class="warn"><a href="https://docs.fastly.com/en/guides/enabling-tls-1-3-through-fastly#limitations-and-key-behaviors">仅客户到 Fastly</a></td>
           </tr>
           <tr>
             <td>Google App Engine</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="ok">dynamic</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="ok">动态</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>Heroku</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>Imperva Incapsula</td>
-            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">yes</a></td>
-            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">yes</a></td>
-            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">yes</a></td>
-            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">dynamic</a></td>
-            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">yes</a></td>
-            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">yes</a></td>
-            <td class="ok"><a href="https://www.incapsula.com/blog/http2-is-here-what-you-need-to-know.html">yes</a></td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">是</a></td>
+            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">是</a></td>
+            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">是</a></td>
+            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">动态</a></td>
+            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">是</a></td>
+            <td class="ok"><a href="https://incapsula.zendesk.com/hc/en-us/articles/235148027-Incapsula-TLS-SSL-Tech-Specs">是</a></td>
+            <td class="ok"><a href="https://www.incapsula.com/blog/http2-is-here-what-you-need-to-know.html">是</a></td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>Instart</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="warn">configurable (static)</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.instartlogic.com/blog/upgrading-http2">yes</a></td>
-            <td class="ok"><a href="https://www.instart.com/blog/may-2019-new-instart-features">yes</a></td>
-            <td class="ok"><a href="https://www.instart.com/blog/may-2019-new-instart-features">yes</a></td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="warn">可配置 (静态)</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.instartlogic.com/blog/upgrading-http2">是</a></td>
+            <td class="ok"><a href="https://www.instart.com/blog/may-2019-new-instart-features">是</a></td>
+            <td class="ok"><a href="https://www.instart.com/blog/may-2019-new-instart-features">是</a></td>
           </tr>
           <tr>
             <td>KeyCDN</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.keycdn.com/support/ocsp-stapling/">yes</a></td>
-            <td class="warn">configurable (static)</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.keycdn.com/blog/keycdn-http2-support/">yes</a></td>
-            <td class="ok"><a href="https://www.keycdn.com/blog/tls-1-3-support/">yes</a></td>
-            <td class="ok"><a href="https://www.keycdn.com/blog/tls-1-3-support/">yes</a></td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.keycdn.com/support/ocsp-stapling/">是</a></td>
+            <td class="warn">可配置 (静态)</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.keycdn.com/blog/keycdn-http2-support/">是</a></td>
+            <td class="ok"><a href="https://www.keycdn.com/blog/tls-1-3-support/">是</a></td>
+            <td class="ok"><a href="https://www.keycdn.com/blog/tls-1-3-support/">是</a></td>
           </tr>
           <tr>
             <td>Limelight</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="warn">configurable</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.limelight.com/orchestrate-platform/">yes</a></td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="warn">可配置</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.limelight.com/orchestrate-platform/">是</a></td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>StackPath</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.maxcdn.com/blog/now-shipping-ocsp-stapling/">yes</a></td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.maxcdn.com/blog/http2-support/">yes</a></td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.maxcdn.com/blog/now-shipping-ocsp-stapling/">是</a></td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.maxcdn.com/blog/http2-support/">是</a></td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>Netlify</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="ok">dynamic</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="ok"><a href="https://www.netlify.com/blog/2015/10/20/netlify-news-no.-6/">yes</a></td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="ok">动态</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="ok"><a href="https://www.netlify.com/blog/2015/10/20/netlify-news-no.-6/">是</a></td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>QUANTIL</td>
-            <td class="ok">yes</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="ok">yes</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
-            <td class="alert">no</td>
+            <td class="ok">是</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="ok">是</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
+            <td class="alert">否</td>
           </tr>
           <tr>
             <td>Vercel Edge Network</td>
-            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#tls-resumption">yes</a></td>
-            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#tls-resumption">yes</a></td>
-            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#ocsp-stapling">yes</a></td>
-            <td class="alert">no</td>
-            <td class="ok"><a href="https://vercel.com/docs/edge-network/overview#supported-protocols">yes</a></td>
-            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#supported-ciphers">yes</a></td>
-            <td class="ok"><a href="https://vercel.com/docs/edge-network/overview#supported-protocols">yes</a></td>
-            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#supported-tls-versions">yes</a></td>
-            <td class="alert">no</td>
+            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#tls-resumption">是</a></td>
+            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#tls-resumption">是</a></td>
+            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#ocsp-stapling">是</a></td>
+            <td class="alert">否</td>
+            <td class="ok"><a href="https://vercel.com/docs/edge-network/overview#supported-protocols">是</a></td>
+            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#supported-ciphers">是</a></td>
+            <td class="ok"><a href="https://vercel.com/docs/edge-network/overview#supported-protocols">是</a></td>
+            <td class="ok"><a href="https://vercel.com/docs/edge-network/encryption#supported-tls-versions">是</a></td>
+            <td class="alert">否</td>
           </tr>
         </tbody>
       </table>
 
-      <p>Your favorite CDN or PaaS provider missing, or found an error? Open a <a href="https://github.com/igrigorik/istlsfastyet.com/issues">pull request!</a></p>
+      <p>没有你最喜欢的 CDN 和 PaaS，或者发现了一个错误？发起一个 <a href="https://github.com/igrigorik/istlsfastyet.com/issues">pull request!</a></p>
 
       <hr />
     </div>
@@ -624,43 +624,43 @@ $> openssl speed ecdh</pre>
     <div class="large-12 columns">
       <h3 id="faq"><a href="#faq">FAQ</a></h3>
 
-      <h4 id="benchmarks">What about benchmarks?</h4>
-      <p>Quality of implementation matters &mdash; no argument there &mdash; and you should do your due diligence. That said, you need to <i>test on your own hardware and with realistic traffic patterns</i> to get an accurate picture of what works best for your specific workload. Don't trust outdated benchmarks, update your OpenSSL libraries, update your server, and run the tests.</p>
+      <h4 id="benchmarks">基准测试呢？</h4>
+      <p>具体实现的质量很重要 —— 这点毋庸置疑 —— 所以你必须自己踏出这一步。也就是说，只有<i>用符合真实情景的流量去测试你自己的硬件</i>，才能知道什么配置对于你的具体负载而言表现最好。不要相信那些已经过期的基准测试结果，升级一下你的 OpenSSL 库，升级一下你的服务器，然后自己跑跑看。</p>
 
-      <h4 id="ops-cost">TLS operational costs are still higher, right?</h4>
-      <p>Not necessarily. Once you enable and optimize your TLS stack you're also well on your way to deploying HTTP/2. Unlike HTTP/1.1, HTTP/2 requires only a single connection per origin, which means fewer sockets, memory buffers, TLS handshakes, and so on. As a result, it may well be the case that you will be able to <a href="https://www.neotys.com/blog/performance-of-spdy-enabled-web-servers/">handle more users with fewer resources</a>.</p>
+      <h4 id="ops-cost">TLS 的运行开销还是相对更高，对吗？</h4>
+      <p>不一定。一旦你开启并优化了 TLS 栈，你离部署 HTTP/2 就已经只有一步之遥了。与 HTTP/1.1 相比， HTTP/2 对每个 origin 只需要一个连接，也就意味着更少的 socket 数、内存 buffer、TLS 握手等等。结果就是，你很有可能反而能够<a href="https://www.neotys.com/blog/performance-of-spdy-enabled-web-servers/">用更少的资源处理更大的用户量</a>。</p>
 
-      <h4 id="latency">TLS still adds an extra RTT; can we fix that?</h4>
-      <p>One possible route is to leverage TCP Fast Open, which would allow us to send the ClientHello within the TCP SYN packet &mdash; that would cut another RTT. In the meantime, both <a href="https://www.ietf.org/proceedings/88/slides/slides-88-tls-4.pdf">TLS 1.3</a> and QUIC are experimenting with "zero-RTT" handshake mechanisms. See <a href="https://docs.google.com/document/d/1g5nIXAIkN_Y-7XJW5K45IblHd_L2f5LTaDUDwvZ5L6g/edit">QUIC crypto doc</a> and <a href="https://www.youtube.com/watch?v=hQZ-0mXFmk8">this GDL episode</a> for a general introduction to QUIC.</p>
+      <h4 id="latency">TLS 仍然增加了额外的往返时延；有啥办法解决吗?</h4>
+      <p>一个可行的方案是采用 TCP 快速打开（Fast Open），使得可以在 TCP SYN 包内附带发送 ClientHello 请求 —— 从而减少一次往返。目前，<a href="https://www.ietf.org/proceedings/88/slides/slides-88-tls-4.pdf">TLS 1.3</a> 和 QUIC 都在试验 “零往返”（"zero-RTT"）的握手机制。查阅 <a href="https://docs.google.com/document/d/1g5nIXAIkN_Y-7XJW5K45IblHd_L2f5LTaDUDwvZ5L6g/edit">QUIC crypto doc</a> 和 <a href="https://www.youtube.com/watch?v=hQZ-0mXFmk8">这一集 GDL 视频</a> 获取对 QUIC 的大致介绍。</p>
 
-      <h4 id="ciphersuite">Which ciphersuite should I be using?</h4>
-      <p>Mozilla maintains a wiki page <a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_Ciphersuite">with a recommended ciphersuite list</a> and server configuration tips.</p>
+      <h4 id="ciphersuite">我应该使用哪一种加密算法？</h4>
+      <p>Mozilla 维护了一个包含<a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_Ciphersuite">推荐的加密算法列表</a>和服务器配置技巧的维基页面。</p>
 
-      <h4 id="resumption">If TLS False Start is enabled, do I need resumption?</h4>
-      <p>Both resumption and TLS False Start eliminate an extra roundtrip from the TLS handshake. However, resumption also allows you to skip the asymmetric handshake crypto by reusing parameters from a previous session &mdash; this saves CPU cycles. In other words, yes you need both.</p>
+      <h4 id="resumption">如果启用了 TLS 抢跑（False Start），还需要会话恢复（resumption）吗?</h4>
+      <p>会话恢复和抢跑都消除了一次 TLS 握手中的往返。此外，通过重用前一次会话的参数，会话恢复使得你能够直接跳过非对称握手加密过程 —— 从而节约 CPU。一句话说，是的，两个都要打开。</p>
 
-      <h4 id="cluster">I run a multi-server deployment. Any tips?</h4>
-      <p>Ensure you have a shared session cache to get a good cache hit rate on resumed sessions across different servers. Also, ensure you expire and rotate your sessions and session ticket keys in a secure manner, <a href="https://www.imperialviolet.org/2013/06/27/botchingpfs.html">especially when forward secrecy is enabled</a>.</p>
+      <h4 id="cluster">我采用了多服务器部署。有什么建议吗？</h4>
+      <p>确保你使用了多服务器之间共享的会话缓存（session cache）来确保跨服务器情景能够有更高的重启会话缓存命中率。同时，确保你会话的过期和会话 ticket 密钥的轮换足够安全，<a href="https://www.imperialviolet.org/2013/06/27/botchingpfs.html">尤其是开启了向前保密的情况下</a>。</p>
 
-      <h4 id="cert-cost">What about certificate costs?</h4>
-      <p>You can get free certificates for any use from <a href="https://letsencrypt.org/">Let’s Encrypt</a>. If you need EV verification, then you will have to pay a bit extra. Use your favorite search engine to look for and evaluate the available options. The security and integrity of your visitors' data is worth every penny!</p>
+      <h4 id="cert-cost">购买证书的开销怎么说？</h4>
+      <p>你可以从 <a href="https://letsencrypt.org/">Let’s Encrypt</a> 得到不限用途的免费证书。如果需要 EV 认证，就得多花一点钱。利用搜索引擎查找并评估所有可选方案。你的访客的数据安全性和完整性值得你花每一分钱！</p>
 
-      <h4 id="ecc">What about Elliptic Curve Cryptography (ECC) certificates?</h4>
-      <p>ECC certificates offer <a href="https://casecurity.org/2014/06/10/benefits-of-elliptic-curve-cryptography/">stronger security and smaller certificates</a> - e.g. a 256-bit ECC key is equivalent to a 3072-bit RSA key.  <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_DSA">ECDSA</a> certificates are recommended for modern TLS clients, such as web browsers, but if you need to support <a href="https://support.globalsign.com/ssl/ssl-certificates-life-cycle/ecc-compatibility">legacy clients</a> (e.g., OS/software from 2008 or earlier often found in enterprise environments) that lack ECDSA support, you can provide RSA as a fallback via a <a href="https://scotthelme.co.uk/hybrid-rsa-and-ecdsa-certificates-with-nginx/">hybrid certificate</a>. Consult the documentation of your server to see if RSA+ECDSA is a supported option.</p>
+      <h4 id="ecc">圆锥曲线加密 (ECC) 证书呢?</h4>
+      <p>ECC 加密证书提供了 <a href="https://casecurity.org/2014/06/10/benefits-of-elliptic-curve-cryptography/">更强的安全性和更小的证书</a> — e.g. 一个 256-bit 的 ECC key 安全性相当于一个 3072-bit 的 RSA key。对于像浏览器这样的现代的 TLS 客户端来说，推荐使用 <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_DSA">ECDSA</a> 证书，但如果你需要支持缺少 ECDSA 的<a href="https://support.globalsign.com/ssl/ssl-certificates-life-cycle/ecc-compatibility">老旧的客户端</a> （例如：企业环境下常见的 2008 年以前的操作系统/软件），你可以通过一个 <a href="https://scotthelme.co.uk/hybrid-rsa-and-ecdsa-certificates-with-nginx/">混合证书</a> 来提供后备 RSA 支持。查阅你服务器的文档来了解 RSA+ECDSA 是否被支持。</p>
+      
+      <h4 id="crime-breach">如何防范 CRIME 和 BREACH 攻击?</h4>
+      <p><a href="https://en.wikipedia.org/wiki/CRIME">CRIME</a> 是一种针对 TLS 层压缩的攻击。所有的现代客户端都禁用了 TLS 压缩，但我们仍然建议禁用你服务器上的 TLS 压缩。另一方面，<a href="https://en.wikipedia.org/wiki/BREACH_(security_exploit)">BREACH</a> 是针对 TLS 之上的层次压缩的攻击（例如 HTTP 压缩），所以必须同时在服务器层级以及应用层级来解决 —— <a href="https://community.qualys.com/blogs/securitylabs/2013/08/07/defending-against-the-breach-attack">了解更多</a>。</p>
 
-      <h4 id="crime-breach">What about CRIME and BREACH attacks?</h4>
-      <p><a href="https://en.wikipedia.org/wiki/CRIME">CRIME</a> is an attack against compression at the TLS layer. All modern user agents disable TLS compression, but it is still recommended that you disable TLS compression on your server. <a href="https://en.wikipedia.org/wiki/BREACH_(security_exploit)">BREACH</a>, on the other hand, is an attack against compression on top of TLS (e.g. HTTP compression) and must be mitigated both at the server and application levels - <a href="https://community.qualys.com/blogs/securitylabs/2013/08/07/defending-against-the-breach-attack">read more</a>.</p>
+      <h4 id="migrate">如何将我已有的网站迁移到 HTTPS？</h4>
+      <p>观看 Google I/O 的 <a href="https://www.youtube.com/watch?v=cBhZ6S0PFCY">HTTPS Everywhere 演讲</a> （<a href="https://docs.google.com/presentation/d/15H8Sj-Zol1tcum0CSylhmXns5r7cvNFtzYrcwAzkTjM/present">幻灯片</a>）学习将你已有内容安全地迁移到 HTTPS 上的步骤与最佳实践。</p>
 
-      <h4 id="migrate">How do I migrate my existing site to HTTPS?</h4>
-      <p>Checkout the <a href="https://www.youtube.com/watch?v=cBhZ6S0PFCY">HTTPS Everywhere presentation</a> (<a href="https://docs.google.com/presentation/d/15H8Sj-Zol1tcum0CSylhmXns5r7cvNFtzYrcwAzkTjM/present">slides</a>) from Google I/O to learn the best practices and the steps to safely migrate your existing content to HTTPS.</p>
+      <h4>我为什么要在所有地方用 HTTPS？</h4>
+      <p>每一个未加密的 HTTP 请求都暴露了用户行为有关的信息。时至今日，已经没有所谓“不敏感”的流量了 —— <a href="https://https.cio.gov/everything/">了解更多</a>。</p>
 
-      <h4>Why do we need HTTPS everywhere?</h4>
-      <p>Every unencrypted HTTP request reveals information about user’s behavior. Today, there is no such thing as insensitive web traffic - <a href="https://https.cio.gov/everything/">read more</a>.</p>
-
-      <h4 id="more">Where can I learn more about TLS performance?</h4>
+      <h4 id="more">在哪里可以了解更多关于 TLS 性能的信息？</h4>
       <ul>
-        <li><a href="https://www.youtube.com/watch?v=0EB7zh_7UE4">Is TLS Fast Yet?</a> video from Velocity SC 2014 (<a href="https://bit.ly/fastTLS">slides</a>).
-        <li><a href="https://www.amazon.com/gp/product/B00FM0OC4S/ref=s9_simh_gw_p351_d2_i1">High Performance Browser Networking</a> contains a <a href="https://hpbn.co/tls">full chapter on TLS performance</a>.
+        <li><a href="https://www.youtube.com/watch?v=0EB7zh_7UE4">Is TLS Fast Yet?</a> 来自 Velocity SC 2014 的视频 （<a href="https://bit.ly/fastTLS">幻灯片</a>）。
+        <li><a href="https://www.amazon.com/gp/product/B00FM0OC4S/ref=s9_simh_gw_p351_d2_i1">《高性能浏览器网络》</a> 包含了 <a href="https://hpbn.co/tls">一整章描写 TLS 性能</a>。
       </ul>
 
     </div>
@@ -669,11 +669,12 @@ $> openssl speed ecdh</pre>
 
   <div class="row">
     <div class="large-12 medium-12 small-12 columns right">
-          <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://istlsfastyet.com" data-text="TLS has exactly one performance problem: it is not used widely enough. Everything else can be optimized." data-size="large">Tweet</a>
+          <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://istlsfastyet.miigon.net" data-text="TLS has exactly one performance problem: it is not used widely enough. Everything else can be optimized." data-size="large">Tweet</a>
 
         <ul class="button-group right">
-          <li><a href="https://twitter.com/igrigorik" class="tiny button">@igrigorik</a></li>
-          <li><a href="https://github.com/igrigorik/istlsfastyet.com" class="tiny button success">View on GitHub</a></li>
+          <li><a href="https://github.com/miigon/" class="tiny button">翻译 @Miigon</a></li>
+          <li><a href="https://twitter.com/igrigorik" class="tiny button">原作者 @igrigorik</a></li>
+          <li><a href="https://github.com/miigon/istlsfastyet.miigon.net" class="tiny button success">在 GitHub 上查看</a></li>
         </ul>
     </div>
   </div>
@@ -684,7 +685,7 @@ $> openssl speed ecdh</pre>
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-71196-12', 'istlsfastyet.com');
+    ga('create', 'UA-71196-12', 'istlsfastyet.miigon.net');
 
     // anonymize user IPs (chops off the last IP triplet)
     ga('set', 'anonymizeIp', true);
